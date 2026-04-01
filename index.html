@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple-Specs | Det hurtige hardware dashboard</title>
+    <style>
+        :root {
+            --bg-color: #050505;
+            --card-bg: #121212;
+            --text-main: #FFFFFF;
+            --text-muted: #A0A0A0;
+            --glow-1: #00D2FF;
+            --glow-2: #8A2BE2;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            padding: 80px 20px 40px;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--glow-1), var(--glow-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 15px var(--glow-1); }
+            50% { box-shadow: 0 0 35px var(--glow-2); }
+            100% { box-shadow: 0 0 15px var(--glow-1); }
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            padding: 20px;
+            max-width: 1000px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            width: 300px;
+            text-align: left;
+            animation: pulseGlow 6s infinite alternate;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .download-section {
+            text-align: center;
+            margin-top: 60px;
+            padding: 40px 20px;
+            width: 100%;
+            background-color: #0a0a0a;
+            border-top: 1px solid #222;
+            flex-grow: 1;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background-color: #1a1a1a;
+            color: var(--glow-1);
+            border: 1px solid var(--glow-1);
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .btn span {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: normal;
+            margin-top: 5px;
+        }
+
+        .btn:hover {
+            background-color: var(--glow-1);
+            color: #000;
+            box-shadow: 0 0 20px var(--glow-1);
+        }
+
+        .btn.arm64 {
+            color: var(--glow-2);
+            border-color: var(--glow-2);
+        }
+
+        .btn.arm64:hover {
+            background-color: var(--glow-2);
+            color: #fff;
+            box-shadow: 0 0 20px var(--glow-2);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>SIMPLE-SPECS</h1>
+        <p class="subtitle">Det lynhurtige, bærbare hardware-dashboard til Windows. Ingen installation, ingen reklamer, kun de rå data du har brug for.</p>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h3>ZERO INSTALL</h3>
+            <p>Hele værktøjet er pakket i én enkelt lille .exe-fil. Kør den direkte fra dit skrivebord, et netværksdrev eller en USB-nøgle.</p>
+        </div>
+        <div class="card">
+            <h3>ÆGTE NØRD-DATA</h3>
+            <p>Se SSD-modeller, RAM-producenter og korrekte MT/s hastigheder. Alt filtreres intelligent for at fjerne støj og OEM-fejl.</p>
+        </div>
+        <div class="card">
+            <h3>1-CLICK EKSORT</h3>
+            <p>Kopier lynhurtigt alle specifikationer og netværksinfo til udklipsholderen med ét klik. Perfekt til salgsannoncer og IT-support.</p>
+        </div>
+    </div>
+
+    <section class="download-section">
+        <h2>Klar til at få overblikket?</h2>
+        <p style="color: var(--text-muted); margin-top: 10px;">Vælg den version der passer til din maskines processor.</p>
+        
+        <div class="btn-group">
+            <a href="https://github.com/MRBennetsen/Simple-Specs/releases/latest/download/Simple-Specs-x64.exe" class="btn">
+                Download x64
+                <span>Intel & AMD maskiner</span>
+            </a>
+            
+            <a href="https://github.com/MRBennetsen/Simple-Specs/releases/latest/download/Simple-Specs-ARM64.exe" class="btn arm64">
+                Download ARM64
+                <span>Snapdragon & Windows on ARM</span>
+            </a>
+        </div>
+    </section>
+
+</body>
+</html>
