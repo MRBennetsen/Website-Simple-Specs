@@ -2,13 +2,15 @@
 <html lang="da">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple-Specs | Det hurtige hardware dashboard</title>
+    
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    
     <style>
         :root {
             --bg-color: #050505;
-            --card-bg: #121212;
+            --card-bg: rgba(18, 18, 18, 0.9); /* Gjort en anelse gennemsigtig så baggrunden kan anes svagt */
             --text-main: #FFFFFF;
             --text-muted: #A0A0A0;
             --glow-1: #00D2FF;
@@ -23,7 +25,15 @@
         }
 
         body {
+            /* Beholder den mørke farve som backup, hvis billedet loades langsomt */
             background-color: var(--bg-color);
+            
+            /* Den mørke toning kombineret med dit slørede baggrundsbillede */
+            background-image: linear-gradient(rgba(5, 5, 5, 0.85), rgba(5, 5, 5, 0.95)), url('background.jpeg');
+            background-size: cover;          
+            background-position: center;     
+            background-attachment: fixed;    
+            
             color: var(--text-main);
             line-height: 1.6;
             display: flex;
@@ -32,6 +42,7 @@
             min-height: 100vh;
         }
 
+        /* Hero Sektion */
         header {
             text-align: center;
             padding: 80px 20px 40px;
@@ -54,12 +65,14 @@
             margin-bottom: 40px;
         }
 
+        /* OLED Glow Animation */
         @keyframes pulseGlow {
             0% { box-shadow: 0 0 15px var(--glow-1); }
             50% { box-shadow: 0 0 35px var(--glow-2); }
             100% { box-shadow: 0 0 15px var(--glow-1); }
         }
 
+        /* Layout til kort og knapper */
         .container {
             display: flex;
             flex-wrap: wrap;
@@ -69,6 +82,7 @@
             max-width: 1000px;
         }
 
+        /* Feature Kort (Minder om appen) */
         .card {
             background-color: var(--card-bg);
             border-radius: 12px;
@@ -77,6 +91,7 @@
             text-align: left;
             animation: pulseGlow 6s infinite alternate;
             transition: transform 0.3s ease;
+            backdrop-filter: blur(5px); /* Giver en let frosted glass effekt ovenpå baggrunden */
         }
 
         .card:hover {
@@ -89,14 +104,16 @@
             margin-bottom: 15px;
         }
 
+        /* Download Sektion */
         .download-section {
             text-align: center;
             margin-top: 60px;
             padding: 40px 20px;
             width: 100%;
-            background-color: #0a0a0a;
+            background-color: rgba(10, 10, 10, 0.8);
             border-top: 1px solid #222;
             flex-grow: 1;
+            backdrop-filter: blur(10px);
         }
 
         .btn-group {
@@ -108,7 +125,7 @@
         }
 
         .btn {
-            background-color: #1a1a1a;
+            background-color: rgba(26, 26, 26, 0.9);
             color: var(--glow-1);
             border: 1px solid var(--glow-1);
             padding: 15px 30px;
@@ -161,11 +178,11 @@
             <p>Hele værktøjet er pakket i én enkelt lille .exe-fil. Kør den direkte fra dit skrivebord, et netværksdrev eller en USB-nøgle.</p>
         </div>
         <div class="card">
-            <h3>ÆGTE NØRD-DATA</h3>
+            <h3>ÆGTE NØRDE-DATA</h3>
             <p>Se SSD-modeller, RAM-producenter og korrekte MT/s hastigheder. Alt filtreres intelligent for at fjerne støj og OEM-fejl.</p>
         </div>
         <div class="card">
-            <h3>1-CLICK EKSORT</h3>
+            <h3>1-CLICK EKSPORT</h3>
             <p>Kopier lynhurtigt alle specifikationer og netværksinfo til udklipsholderen med ét klik. Perfekt til salgsannoncer og IT-support.</p>
         </div>
     </div>
@@ -185,6 +202,10 @@
                 <span>Snapdragon & Windows on ARM</span>
             </a>
         </div>
+        
+        <p style="color: #666; font-size: 0.85rem; margin-top: 30px; max-width: 600px; margin-left: auto; margin-right: auto;">
+            <em>Får du en blå SmartScreen advarsel i Windows? Simple-Specs er et nyt værktøj fra en uafhængig udvikler. Klik på "Flere oplysninger" og derefter "Kør alligevel".</em>
+        </p>
     </section>
 
 </body>
