@@ -7,10 +7,12 @@
     
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
     <style>
         :root {
             --bg-color: #050505;
-            --card-bg: rgba(18, 18, 18, 0.9); /* Gjort en anelse gennemsigtig så baggrunden kan anes svagt */
+            --card-bg: rgba(18, 18, 18, 0.85); 
             --text-main: #FFFFFF;
             --text-muted: #A0A0A0;
             --glow-1: #00D2FF;
@@ -25,10 +27,7 @@
         }
 
         body {
-            /* Beholder den mørke farve som backup, hvis billedet loades langsomt */
             background-color: var(--bg-color);
-            
-            /* Den mørke toning kombineret med dit slørede baggrundsbillede */
             background-image: linear-gradient(rgba(5, 5, 5, 0.85), rgba(5, 5, 5, 0.95)), url('background.jpeg');
             background-size: cover;          
             background-position: center;     
@@ -40,9 +39,37 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Hero Sektion */
+        /* --- ANIMATIONER --- */
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(40px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideRightFade {
+            0% { opacity: 0; transform: translateX(-50px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        .animate-up {
+            opacity: 0;
+            animation: slideUpFade 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        .animate-side {
+            opacity: 0;
+            animation: slideRightFade 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        .delay-4 { animation-delay: 0.8s; }
+        .delay-5 { animation-delay: 1.0s; }
+
+        /* --- LAYOUT --- */
         header {
             text-align: center;
             padding: 80px 20px 40px;
@@ -62,17 +89,35 @@
         p.subtitle {
             font-size: 1.2rem;
             color: var(--text-muted);
-            margin-bottom: 40px;
+            margin-bottom: 20px;
         }
 
-        /* OLED Glow Animation */
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            border: 1px solid #333;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .github-link:hover {
+            color: #fff;
+            border-color: #666;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
         @keyframes pulseGlow {
             0% { box-shadow: 0 0 15px var(--glow-1); }
             50% { box-shadow: 0 0 35px var(--glow-2); }
             100% { box-shadow: 0 0 15px var(--glow-1); }
         }
 
-        /* Layout til kort og knapper */
         .container {
             display: flex;
             flex-wrap: wrap;
@@ -82,16 +127,15 @@
             max-width: 1000px;
         }
 
-        /* Feature Kort (Minder om appen) */
         .card {
             background-color: var(--card-bg);
             border-radius: 12px;
             padding: 30px;
             width: 300px;
             text-align: left;
-            animation: pulseGlow 6s infinite alternate;
+            animation: pulseGlow 6s infinite alternate, slideRightFade 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
             transition: transform 0.3s ease;
-            backdrop-filter: blur(5px); /* Giver en let frosted glass effekt ovenpå baggrunden */
+            backdrop-filter: blur(5px);
         }
 
         .card:hover {
@@ -104,16 +148,94 @@
             margin-bottom: 15px;
         }
 
+        /* Tillids-sektion & Changelog (Genbruger samme stil) */
+        .info-section {
+            max-width: 800px;
+            width: 100%;
+            text-align: left;
+            margin: 20px 20px;
+            padding: 30px;
+            background: rgba(10, 10, 10, 0.6);
+            border-radius: 12px;
+            border: 1px solid #222;
+            backdrop-filter: blur(5px);
+        }
+
+        .info-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #E0E0E0;
+            text-align: center;
+        }
+
+        .info-section p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        /* Særlig styling til Changelog indholdet hentet fra GitHub */
+        #changelog-content {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px dashed #333;
+            margin-top: 15px;
+        }
+        
+        #changelog-content h1, #changelog-content h2, #changelog-content h3 {
+            color: var(--glow-1);
+            font-size: 1.2rem;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            letter-spacing: normal;
+            background: none;
+            -webkit-text-fill-color: var(--glow-1);
+        }
+
+        #changelog-content ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+            color: var(--text-main);
+        }
+
+        #changelog-content li {
+            margin-bottom: 5px;
+        }
+
+        .release-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .version-badge {
+            background: linear-gradient(90deg, var(--glow-1), var(--glow-2));
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .release-date {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
         /* Download Sektion */
         .download-section {
             text-align: center;
-            margin-top: 60px;
-            padding: 40px 20px;
+            padding: 50px 20px;
             width: 100%;
             background-color: rgba(10, 10, 10, 0.8);
             border-top: 1px solid #222;
             flex-grow: 1;
             backdrop-filter: blur(10px);
+            margin-top: 40px;
         }
 
         .btn-group {
@@ -138,6 +260,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-width: 220px;
         }
 
         .btn span {
@@ -163,31 +286,54 @@
             color: #fff;
             box-shadow: 0 0 20px var(--glow-2);
         }
+        
+        .loading-text {
+            text-align: center;
+            color: var(--text-muted);
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
 
-    <header>
+    <header class="animate-up">
         <h1>SIMPLE-SPECS</h1>
         <p class="subtitle">Det lynhurtige, bærbare hardware-dashboard til Windows. Ingen installation, ingen reklamer, kun de rå data du har brug for.</p>
+        <a href="https://github.com/MRBennetsen/Simple-Specs" target="_blank" class="github-link">
+            <svg height="20" width="20" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+            Se Kildekoden på GitHub
+        </a>
     </header>
 
     <div class="container">
-        <div class="card">
+        <div class="card animate-side delay-1">
             <h3>ZERO INSTALL</h3>
             <p>Hele værktøjet er pakket i én enkelt lille .exe-fil. Kør den direkte fra dit skrivebord, et netværksdrev eller en USB-nøgle.</p>
         </div>
-        <div class="card">
-            <h3>ÆGTE NØRDE-DATA</h3>
+        <div class="card animate-side delay-2">
+            <h3>ÆGTE NØRD-DATA</h3>
             <p>Se SSD-modeller, RAM-producenter og korrekte MT/s hastigheder. Alt filtreres intelligent for at fjerne støj og OEM-fejl.</p>
         </div>
-        <div class="card">
+        <div class="card animate-side delay-3">
             <h3>1-CLICK EKSPORT</h3>
             <p>Kopier lynhurtigt alle specifikationer og netværksinfo til udklipsholderen med ét klik. Perfekt til salgsannoncer og IT-support.</p>
         </div>
     </div>
 
-    <section class="download-section">
+    <div class="info-section animate-up delay-4">
+        <h2>Seneste Opdatering</h2>
+        <div id="changelog-content">
+            <p class="loading-text">Henter release notes fra GitHub...</p>
+        </div>
+    </div>
+
+    <div class="info-section animate-up delay-5" style="text-align: center;">
+        <h2>Gennemsigtighed & Sikkerhed</h2>
+        <p>Simple-Specs er bygget af IT-folk til IT-folk. Vi hader oppustet software og skjult telemetri lige så meget som du gør.</p>
+        <p>Derfor aflæser programmet udelukkende dine hardwaredata lokalt via Windows WMI (Windows Management Instrumentation). <strong>Der sendes nul bytes tilbage til os.</strong> Vil du være helt sikker? Koden er 100% åben, så du kan læse den igennem eller bygge programmet selv fra bunden.</p>
+    </div>
+
+    <section class="download-section animate-up delay-5">
         <h2>Klar til at få overblikket?</h2>
         <p style="color: var(--text-muted); margin-top: 10px;">Vælg den version der passer til din maskines processor.</p>
         
@@ -208,5 +354,43 @@
         </p>
     </section>
 
+    <script>
+        async function fetchLatestRelease() {
+            const repo = 'MRBennetsen/Simple-Specs';
+            const apiUrl = `https://api.github.com/repos/${repo}/releases/latest`;
+            const changelogDiv = document.getElementById('changelog-content');
+
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) throw new Error('Kunne ikke hente data');
+                
+                const data = await response.json();
+                
+                // Formater datoen til dansk standard
+                const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+                const publishDate = new Date(data.published_at).toLocaleDateString('da-DK', dateOptions);
+                
+                // Oversæt markdown (Release notes) til HTML vha. marked.js
+                const parsedBody = marked.parse(data.body);
+
+                // Byg HTML strukturen dynamisk
+                changelogDiv.innerHTML = `
+                    <div class="release-meta">
+                        <span class="version-badge">${data.name || data.tag_name}</span>
+                        <span class="release-date">Udgivet: ${publishDate}</span>
+                    </div>
+                    <div class="release-body">
+                        ${parsedBody}
+                    </div>
+                `;
+            } catch (error) {
+                changelogDiv.innerHTML = `<p style="text-align:center; color: #ff6b6b;">Kunne ikke hente seneste opdatering fra GitHub. Tjek repot for mere info.</p>`;
+                console.error("Fejl ved API kald:", error);
+            }
+        }
+
+        // Kør scriptet så snart siden er loadet
+        document.addEventListener('DOMContentLoaded', fetchLatestRelease);
+    </script>
 </body>
 </html>
